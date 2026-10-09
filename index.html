@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modulistica Cimiteriale</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:700px;margin:auto;padding:20px;background:#f4f6f8;color:#222}
+h1{font-size:25px;color:#234665}
+label{display:block;margin-top:14px;font-weight:bold}
+input,select{box-sizing:border-box;width:100%;padding:12px;margin-top:5px;border:1px solid #bbb;border-radius:6px;font-size:16px}
+button{width:100%;padding:14px;margin-top:20px;background:#234665;color:white;border:0;border-radius:7px;font-size:16px}
+p{line-height:1.5}
+@media print{button{display:none}body{background:white}}
+</style>
+</head>
+<body>
+<h1>Modulistica Cimiteriale</h1>
+<p>Inserimento dei dati per predisporre le pratiche cimiteriali.</p>
+<form id="pratica">
+<label>Nome del richiedente</label>
+<input name="nome" required>
+<label>Cognome del richiedente</label>
+<input name="cognome" required>
+<label>Codice fiscale del richiedente</label>
+<input name="cf">
+<label>Telefono</label>
+<input name="telefono" type="tel">
+<label>Nome e cognome del defunto</label>
+<input name="defunto" required>
+<label>Data del decesso</label>
+<input name="data" type="date">
+<label>Tipo di pratica</label>
+<select name="tipo">
+<option>Richiesta operazioni cimiteriali</option>
+<option>Concessione loculo o nicchia</option>
+<option>Dichiarazione prossimi congiunti</option>
+<option>Consenso alla cremazione</option>
+<option>Autorizzazione alla tumulazione</option>
+<option>Trasporto salma, resti o ceneri</option>
+</select>
+<button type="button" onclick="genera()">Prepara riepilogo</button>
+</form>
+<section id="risultato"></section>
+<script>
+function genera(){
+const f=document.getElementById('pratica');
+if(!f.reportValidity())return;
+const dati=new FormData(f);
+let html='<h2>Riepilogo della pratica</h2>';
+for(const [k,v] of dati.entries()){
+const r=document.createElement('p');
+r.textContent=({nome:'Nome',cognome:'Cognome',cf:'Codice fiscale',telefono:'Telefono',defunto:'Defunto',data:'Data del decesso',tipo:'Tipo di pratica'})[k]+': '+(v||'Non indicato');
+document.getElementById('risultato').appendChild(r);
+}
+document.getElementById('risultato').insertAdjacentHTML('beforeend','<button onclick="window.print()">Stampa riepilogo</button>');
+}
+</script>
+</body>
+</html>
